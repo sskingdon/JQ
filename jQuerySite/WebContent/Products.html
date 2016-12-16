@@ -168,7 +168,7 @@
 			
 			$('ul.list-group').on('click','li.list-group-item',function(){
 				var id = $(this).data("id");
-				$('ul.list-group>li').removeClass('active');
+				$('ul.list-group>li').removeClass('actve');
 				$('ul.list-group>li[data-id="'+id+'"]').addClass('active');
 				
 				loadProduct(id);
