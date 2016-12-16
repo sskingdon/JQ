@@ -68,13 +68,13 @@
     <span id="span2"></span>
     <hr />
     <input type="button" value="check" id="buttonToggle" /><br />
-<!--     <input type="checkbox" id="Toggle" />Toggle All<br /> -->
-    <input type="checkbox" value="a1" />A1
-    <input type="checkbox" value="a2" />A2
-    <input type="checkbox" value="a3" />A3
-    <input type="checkbox" value="a4" />A4
-    <input type="checkbox" value="a5" />A5
-    <input type="checkbox" value="a6" />A6
+    <input type="checkbox" id="Toggle" />Toggle All<br />
+    <input type="checkbox" value="a1" name="a" />A1
+    <input type="checkbox" value="a2" name="a"/>A2
+    <input type="checkbox" value="a3" name="a"/>A3
+    <input type="checkbox" value="a4" name="a"/>A4
+    <input type="checkbox" value="a5" name="a"/>A5
+    <input type="checkbox" value="a6" name="a"/>A6
      <input type="button" value="get checked"  id="buttonGet" />
     <hr />
     <h1 id="myH">write less, do more</h1>
@@ -186,6 +186,9 @@
 
         $('#Toggle').change(function(){
             //切換所有checkbox的勾選狀態        	
+            var tf = $(this).prop('checked');
+//             alert(tf);
+            $(':checkbox[name="a"]').prop('checked',tf);
         	
         })
 
