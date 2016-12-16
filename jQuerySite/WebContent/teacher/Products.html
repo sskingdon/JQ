@@ -148,6 +148,14 @@
 			
 			
 			
+				
+			$('ul.list-group').on('click','.list-group-item',function(){
+				var id = $(this).data("id");
+				$('.list-group>li').removeClass('active');
+				$('.list-group>li[data-id="' + id + '"]').addClass('active');
+				loadProduct(id);
+			})
+			
 		   loadProduct(1);
 			
 		
