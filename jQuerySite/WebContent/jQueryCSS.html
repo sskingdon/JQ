@@ -12,7 +12,7 @@
                 border: 1px red solid;
                 width: 400px;
                 text-align: center;
-                background-color:green;
+                background-color:orange;
         }
          .s2{
             color: green;
@@ -127,9 +127,10 @@
 
 	<script src="js/jquery-1.12.3.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
 	<script>
 		$(function(){
-			$('h1').addClass('s1').hover(function(){$(this).removeClass('s1').addClass('s2')},function(){$(this).removeClass('s2').addClass('s1')});
+			$('h1').addClass('s1').hover(function(){$(this).switchClass('s1','s2',1000)},function(){$(this).switchClass('s2','s1',1000)});
 			
 			
 		})
