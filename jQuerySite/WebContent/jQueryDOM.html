@@ -75,7 +75,9 @@
     <input type="checkbox" value="a4" name="a"/>A4
     <input type="checkbox" value="a5" name="a"/>A5
     <input type="checkbox" value="a6" name="a"/>A6
-     <input type="button" value="get checked"  id="buttonGet" />
+     <input type="button" value="get checked"  id="buttonGet" /><br/>
+     <span id="ff"></span>
+    
     <hr />
     <h1 id="myH">write less, do more</h1>
 
@@ -193,14 +195,22 @@
         })
 
         $('#buttonToggle').click(function () {            
-            //切換各自checkbox的勾選狀態
-            
+            $(':checkbox[name="a"]').each(function(){
+            	var b = $(this).prop("checked");
+            	$(this).prop("checked",!b);
+            });
         });
         
         $('#buttonGet').click(function(){
         	//讀出所有被勾選checkbox的值
-        	
+        	var item=[];
+        	$(':checkbox[name="a"]:checked').each(function(){
+            	item.push($(this).val());          	
+            });
+        	$("#ff").text(item);
         });
+        	
+      
 
         
         //prepend() vs append() vs before() vs after()
