@@ -52,11 +52,30 @@
 		    <div class="col-md-9">
 		    <div class="jumbotron">
 			<div class="page-header">
-				<h3>jQuery Each</h3>
+				<h3>練習</h3>
 			</div>
 			<!-- 每頁不同的內容從這裡開始 -->
-
-
+            <div class="row">
+               <div class="col-sm-3" id="leftSide">
+                  <ul class="list-group">
+				  </ul>
+               </div>
+               <div class="col-sm-9">
+                   <table id="productTable" class="table table-bordered">
+                       <thead>
+                          <tr>
+                             <th>ProductID</th>
+                             <th>ProductName</th>
+                             <th>UnitPrice</th>
+                             <th>UnitsInStock</th>
+                          </tr>
+                       </thead>
+                       <tbody>
+ 		
+                       </tbody>
+                   </table>
+               </div>
+            </div>
 
 			<!-- 每頁不同的內容到這裡結束 -->
 		</div>
@@ -103,64 +122,62 @@
 
 
 	<script src="js/jquery-1.12.3.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	
 	<script>
-	$(function(){
+		$(function(){
+			//載入分類資料
+			$.ajax({
+				"url":"XMLServlet",
+				"type":"GET",
+				"dataType":"xml"
+			}).done(function(doc){
+				//doc -> XML DOM
+				//console.log(doc);
+				var myUl = $("ul.list-group");
+				$(doc).find("Category").each(function(){
+					var categoryId = $(this).children("CategoryID").text();
+					var categoryName = $(this).children("CategoryName").text();
+				    // <li data-id="2" class="list-group-item">Condiments</li>
+				    var eleLi = $("<li></li>").text(categoryName)
+				                              .addClass('list-group-item')
+				                              .attr('data-id',categoryId);
+				    myUl.append(eleLi);
+				})
+			})
+			
+			
+			
+		   loadProduct(1);
+			
 		
-		var names = ["Jack","Tom","Mary","Fiona"];  
-// 		$.each(names,function(index,value){
-// 			console.log(value);
-// 		})
-		
-		
-		
-		var emp = {"name":"Jack","salary":32000,"workYears":2};
-// 		$.each(emp,function(name,value){
-// 			console.log(value);
-// 		})
-		
-		
-		var emps = [{"name":"Jack","salary":32000,"workYears":2},
-		            {"name":"Mary","salary":42000,"workYears":5},
-		            {"name":"Tom","salary":52000,"workYears":7}];
-		            
-// 		            $.each(emps,function(index,emp){
-// 		            	console.log(emp.name);
-// 		            	console.log(emp.salary);
-// 		            	console.log(emp.workYears);
-// 		            })
-		            
-		
-	
-		
-		var data = {
-	            emps: [{ name: "Jack", age: 29, contact: {home:"02-12345678",cell:"0911222333"}},
-	                  { name: "Mary", age: 35, contact: { home: "02-33116745", cell: "0932112654" } },
-	                  { name: "Tom", age: 26, contact: { home: "02-54346666", cell: "0955832123" } }]
-	        };
-		           $.each(data,function(name,emps){             //my try version
-		        	   
-		        	   $.each(emps,function(index,emp){
-		        		   console.log(emp.name);
-		        		  console.log(emp.contact.home);
-		        		   })
-		        		   
-		        	  
-		           }) 
-// 		    $.each(data.emps,function(idx,emp){     //teacher version
-// 		    	//emp -> object
-// 		    	console.log(emp.name);
-// 		    	console.log(emp.age);
-// 		    	console.log(emp.contact.home);
-// 		    	console.log(emp.contact.cell);
-// 		    })
+		   //根據分類編號讀出產品資料
+		   function loadProduct(id){
+			  	$.getJSON('Products',{"categoryID":id},function(datas){
+			  	    var tb = $("#productTable>tbody");
+			  	    tb.empty();
+			  	    
+			  		$.each(datas,function(idx,product){
+			  			var productID = product.ProductID;
+			  			var productName = product.ProductName;
+			  			var unitPrice = product.UnitPrice;
+			  			var unitsInStock = product.UnitsInStock;
+			  			
+			  			
 
-
-		            
-		            
-		            
-	})
+			  			//<tr><td>1</td><td>Chai</td><td>18.0000</td><td>39</td></tr>
+			  			var cell1 = $("<td></td>").text(productID);
+			  			var cell2 = $("<td></td>").text(productName);
+			  			var cell3 = $("<td></td>").text(unitPrice);
+			  			var cell4 = $("<td></td>").text(unitsInStock);
+			  			
+			  			var row = $("<tr></tr>").append([cell1,cell2,cell3,cell4]);
+			  			
+			  			tb.append(row);
+			  		})
+			  	})		   
+		   }
+		})
 	</script>
 </body>
 

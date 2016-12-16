@@ -58,14 +58,14 @@
             <div class="row">
                <div class="col-sm-3" id="leftSide">
                   <ul class="list-group">
-					  <li data-id="1" class="list-group-item active">Beverages</li>
-					  <li data-id="2" class="list-group-item">Condiments</li>
-					  <li data-id="3" class="list-group-item">Confections</li>
-					  <li data-id="4" class="list-group-item">Dairy Products</li>
-					  <li data-id="5" class="list-group-item">Grains/Cereals</li>
-					  <li data-id="6" class="list-group-item">Meat/Poultry</li>
-					  <li data-id="7" class="list-group-item">Produce</li>
-					  <li data-id="8" class="list-group-item">Seafood</li>
+<!-- 					  <li data-id="1" class="list-group-item active">Beverages</li> -->
+<!-- 					  <li data-id="2" class="list-group-item">Condiments</li> -->
+<!-- 					  <li data-id="3" class="list-group-item">Confections</li> -->
+<!-- 					  <li data-id="4" class="list-group-item">Dairy Products</li> -->
+<!-- 					  <li data-id="5" class="list-group-item">Grains/Cereals</li> -->
+<!-- 					  <li data-id="6" class="list-group-item">Meat/Poultry</li> -->
+<!-- 					  <li data-id="7" class="list-group-item">Produce</li> -->
+<!-- 					  <li data-id="8" class="list-group-item">Seafood</li> -->
 					</ul>
                </div>
                <div class="col-sm-9">
@@ -79,18 +79,18 @@
                           </tr>
                        </thead>
                        <tbody>
-                       		<tr><td>1</td><td>Chai</td><td>18.0000</td><td>39</td></tr>
-                       		<tr><td>2</td><td>Chang</td><td>19.0000</td><td>17</td></tr>
-                       		<tr><td>24</td><td>Guaraná Fantástica</td><td>4.5000</td><td>20</td></tr>
-                       		<tr><td>34</td><td>Sasquatch Ale</td><td>14.0000</td><td>111</td></tr>
-                       		<tr><td>35</td><td>Steeleye Stout</td><td>18.0000</td><td>20</td></tr>
-                       		<tr><td>38</td><td>Côte de Blaye</td><td>263.5000</td><td>17</td></tr>
-                       		<tr><td>39</td><td>Chartreuse verte</td><td>18.0000</td><td>69</td></tr>
-                       		<tr><td>43</td><td>Ipoh Coffee</td><td>46.0000</td><td>17</td></tr>
-                       		<tr><td>67</td><td>Laughing Lumberjack Lager</td><td>14.0000</td><td>52</td>
-                       		</tr><tr><td>70</td><td>Outback Lager</td><td>15.0000</td><td>15</td></tr>
-                       		<tr><td>75</td><td>Rhönbräu Klosterbier</td><td>7.7500</td><td>125</td></tr>
-                       		<tr><td>76</td><td>Lakkalikööri</td><td>18.0000</td><td>57</td></tr>                       		
+<!--                        		<tr><td>1</td><td>Chai</td><td>18.0000</td><td>39</td></tr> -->
+<!--                        		<tr><td>2</td><td>Chang</td><td>19.0000</td><td>17</td></tr> -->
+<!--                        		<tr><td>24</td><td>Guaraná Fantástica</td><td>4.5000</td><td>20</td></tr> -->
+<!--                        		<tr><td>34</td><td>Sasquatch Ale</td><td>14.0000</td><td>111</td></tr> -->
+<!--                        		<tr><td>35</td><td>Steeleye Stout</td><td>18.0000</td><td>20</td></tr> -->
+<!--                        		<tr><td>38</td><td>Côte de Blaye</td><td>263.5000</td><td>17</td></tr> -->
+<!--                        		<tr><td>39</td><td>Chartreuse verte</td><td>18.0000</td><td>69</td></tr> -->
+<!--                        		<tr><td>43</td><td>Ipoh Coffee</td><td>46.0000</td><td>17</td></tr> -->
+<!--                        		<tr><td>67</td><td>Laughing Lumberjack Lager</td><td>14.0000</td><td>52</td> -->
+<!--                        		</tr><tr><td>70</td><td>Outback Lager</td><td>15.0000</td><td>15</td></tr> -->
+<!--                        		<tr><td>75</td><td>Rhönbräu Klosterbier</td><td>7.7500</td><td>125</td></tr> -->
+<!--                        		<tr><td>76</td><td>Lakkalikööri</td><td>18.0000</td><td>57</td></tr>                       		 -->
                        </tbody>
                    </table>
                </div>
@@ -145,12 +145,55 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script>
 		$(function(){
-		   loadProduct(1);
+		   
+			$.ajax({
+			   dataType:'xml',
+			   typr:'GET',
+			   url:'XMLServlet'
+		   })
+		   .done(function(data){
+			   $(data).find('Category').each(function(){
+				   var categoryName=$(this).children("CategoryName").text();
+				   var categoryId=$(this).children("CategoryID").text();
+// 				   <li data-id="1" class="list-group-item active">Beverages</li> 
+				var myUl = $("ul.list-group");
+				var li=$("<li></li>").text(categoryName)
+									 .addClass("list-group-item ")
+				   					 .attr("data-id",categoryId)
+				myUl.append(li);   			
+				   
+			   })
+		   })
+			
+			
+			
+			
+			
+			loadProduct(1);
 			
 		
 		   
 		   function loadProduct(id){
-			  			   
+			 $.getJSON("Products",{"categoryID":id},function(datas){
+				 var tb = $("#productTable>tbody");
+			  	    tb.empty();
+			  	    
+				 $.each(datas,function(idx,value){
+				  		var productID = value.ProductID;
+				  		var productName = value.ProductName;
+				  		var unitPrice = value.UnitPrice;
+				  		var unitsInStock = value.UnitsInStock;
+// 				  		<tr><td>1</td><td>Chai</td><td>18.0000</td><td>39</td></tr> -->
+				  		var section1=$("<td></td>").text(productID);
+				  		var section2=$("<td></td>").text(productName);
+				  		var section3=$("<td></td>").text(unitPrice);
+				  		var section4=$("<td></td>").text(unitsInStock);
+				  		
+				  		var tr=$("<tr></tr>").append([section1,section2,section3,section4]);
+				  		tb.append(tr);
+					 
+				 })
+			 }) 			   
 		   }
 		})
 	</script>
